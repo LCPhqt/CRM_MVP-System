@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM System - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            min-height: 100vh;
+        }
+
+        /* Header/Navbar */
+        .header {
+            background: linear-gradient(135deg, #1f1f1f 0%, #2d2d2d 100%);
+            border-bottom: 2px solid #dc2626;
+            color: white;
+            padding: 0 30px;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #dc2626;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .user-name {
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
+        }
+
+        /* Search Bar Container */
+        .search-container {
+            background: #1f1f1f;
+            border: 1px solid #2d2d2d;
+            padding: 25px 30px;
+            margin: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-header {
+            margin-bottom: 20px;
+        }
+
+        .search-header h2 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .search-header p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .search-field {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e5e7eb;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: #6b7280;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .search-field input,
+        .search-field select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background-color: #0f0f0f;
+            border: 2px solid #2d2d2d;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-field select {
+            padding-left: 15px;
+        }
+
+        .search-field input::placeholder {
+            color: #6b7280;
+        }
+
+        .search-field input:focus,
+        .search-field select:focus {
+            outline: none;
+            border-color: #dc2626;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .search-field select option {
+            background-color: #1f1f1f;
+            color: #ffffff;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: #2d2d2d;
+            color: #e5e7eb;
+            border: 2px solid #3d3d3d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3d3d3d;
+            border-color: #4d4d4d;
+        }
+
+        /* Results Container */
+        .results-container {
+            background: #1f1f1f;
+            border: 1px solid #2d2d2d;
+            margin: 0 30px 30px;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-header h3 {
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .results-count {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        th {
+            background-color: #0f0f0f;
+            color: #e5e7eb;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        td {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #252525;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+
+        .status-inactive {
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #ef4444;
+            border: 1px solid #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header,
+            .search-container,
+            .results-container {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 0;
+                gap: 15px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-field {
+                min-width: 100%;
+            }
+
+            .search-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <span>📊</span> CRM Dashboard
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <span class="user-name" id="userName">Admin</span>
+                <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Search Container -->
+    <div class="search-container">
+        <div class="search-header">
+            <h2>🔍 Tìm kiếm khách hàng / User</h2>
+            <p>Tìm kiếm và quản lý thông tin khách hàng trong hệ thống</p>
+        </div>
+
+        <form class="search-bar" id="searchForm">
+            <div class="search-field">
+                <label for="searchQuery">Từ khóa tìm kiếm</label>
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input 
+                        type="text" 
+                        id="searchQuery" 
+                        name="searchQuery" 
+                        placeholder="Tìm theo tên, email, SĐT..."
+                    >
+                </div>
+            </div>
+
+            <div class="search-field" style="max-width: 200px;">
+                <label for="filterRole">Vai trò</label>
+                <select id="filterRole" name="filterRole">
+                    <option value="">Tất cả</option>
+                    <option value="admin">Admin</option>
+                    <option value="sales">Sales</option>
+                    <option value="customer">Customer</option>
+                </select>
+            </div>
+
+            <div class="search-field" style="max-width: 200px;">
+                <label for="filterStatus">Trạng thái</label>
+                <select id="filterStatus" name="filterStatus">
+                    <option value="">Tất cả</option>
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Không hoạt động</option>
+                </select>
+            </div>
+
+            <div class="search-actions">
+                <button type="submit" class="btn btn-primary">
+                    🔎 Tìm kiếm
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetSearch()">
+                    🔄 Reset
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Container -->
+    <div class="results-container">
+        <div class="results-header">
+            <h3>Kết quả tìm kiếm</h3>
+            <span class="results-count" id="resultsCount">0 kết quả</span>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Công ty</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
+
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-icon">📭</div>
+                <p>Chưa có kết quả tìm kiếm. Vui lòng nhập từ khóa để tìm kiếm.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_URL = 'http://localhost:5000/api';
+
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Display user info
+            if (user.fullName) {
+                document.getElementById('userName').textContent = user.fullName;
+                document.getElementById('userAvatar').textContent = user.fullName.charAt(0).toUpperCase();
+            }
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Reset search
+        function resetSearch() {
+            document.getElementById('searchForm').reset();
+            document.getElementById('resultsBody').innerHTML = '';
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('resultsTable').querySelector('thead').style.display = 'none';
+            document.getElementById('resultsCount').textContent = '0 kết quả';
+        }
+
+        // Perform search
+        async function performSearch(e) {
+            if (e) e.preventDefault();
+
+            const searchQuery = document.getElementById('searchQuery').value.trim();
+            const filterRole = document.getElementById('filterRole').value;
+            const filterStatus = document.getElementById('filterStatus').value;
+
+            try {
+                const token = localStorage.getItem('token');
+                
+                // Mock data for demonstration
+                const mockData = generateMockData(searchQuery, filterRole, filterStatus);
+                
+                // Display results
+                displayResults(mockData);
+            } catch (error) {
+                console.error('Error:', error);
+                displayResults([]);
+            }
+        }
+
+        // Display results in table
+        function displayResults(data) {
+            const resultsBody = document.getElementById('resultsBody');
+            const emptyState = document.getElementById('emptyState');
+            const resultsTable = document.getElementById('resultsTable');
+            const resultsCount = document.getElementById('resultsCount');
+
+            if (data.length === 0) {
+                resultsTable.querySelector('thead').style.display = 'none';
+                emptyState.style.display = 'block';
+                resultsCount.textContent = '0 kết quả';
+                resultsBody.innerHTML = '';
+                return;
+            }
+
+            resultsTable.querySelector('thead').style.display = 'table-header-group';
+            emptyState.style.display = 'none';
+            resultsCount.textContent = `${data.length} kết quả`;
+
+            resultsBody.innerHTML = data.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.fullName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td>${user.company || '-'}</td>
+                    <td>${getRoleLabel(user.role)}</td>
+                    <td>
+                        <span class="status-badge ${user.isActive ? 'status-active' : 'status-inactive'}">
+                            ${user.isActive ? 'Hoạt động' : 'Không hoạt động'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Get role label
+        function getRoleLabel(role) {
+            const labels = {
+                'admin': 'Quản trị viên',
+                'sales': 'Nhân viên bán hàng',
+                'customer': 'Khách hàng'
+            };
+            return labels[role] || role;
+        }
+
+        // Generate mock data for demo
+        function generateMockData(query, role, status) {
+            const allData = [
+                { id: 1, fullName: 'Nguyễn Văn A', email: 'nguyenvana@email.com', phone: '0901234567', company: 'ABC Corp', role: 'admin', isActive: true },
+                { id: 2, fullName: 'Trần Thị B', email: 'tranthib@email.com', phone: '0902345678', company: 'XYZ Ltd', role: 'sales', isActive: true },
+                { id: 3, fullName: 'Lê Văn C', email: 'levanc@email.com', phone: '0903456789', company: 'DEF Inc', role: 'customer', isActive: false },
+                { id: 4, fullName: 'Phạm Thị D', email: 'phamthid@email.com', phone: '0904567890', company: null, role: 'sales', isActive: true },
+                { id: 5, fullName: 'Hoàng Văn E', email: 'hoangvane@email.com', phone: '0905678901', company: 'GHI Group', role: 'customer', isActive: true },
+            ];
+
+            return allData.filter(user => {
+                // Filter by search query
+                if (query && !user.fullName.toLowerCase().includes(query.toLowerCase()) &&
+                    !user.email.toLowerCase().includes(query.toLowerCase()) &&
+                    !user.phone.includes(query)) {
+                    return false;
+                }
+
+                // Filter by role
+                if (role && user.role !== role) {
+                    return false;
+                }
+
+                // Filter by status
+                if (status) {
+                    const isActive = status === 'active';
+                    if (user.isActive !== isActive) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+        }
+
+        // Attach event listener to form
+        document.getElementById('searchForm').addEventListener('submit', performSearch);
+
+        // Initial hide of table header and show empty state
+        document.getElementById('resultsTable').querySelector('thead').style.display = 'none';
+    </script>
+</body>
+</html>
