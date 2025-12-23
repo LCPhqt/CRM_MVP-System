@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - Customer Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1f1f1f;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            max-width: 480px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(220, 38, 38, 0.3);
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .user-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e5e7eb;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background-color: #0f0f0f;
+            border: 2px solid #2d2d2d;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #6b7280;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #dc2626;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-group input:focus + .input-icon {
+            color: #dc2626;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 20px;
+            user-select: none;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+
+        .toggle-password:hover {
+            color: #dc2626;
+        }
+
+        /* Checkbox group */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #dc2626;
+        }
+
+        .checkbox-group label {
+            font-size: 13px;
+            color: #9ca3af;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.5;
+        }
+
+        .checkbox-group label a {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-group label a:hover {
+            text-decoration: underline;
+            color: #ef4444;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .footer-links a {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #ef4444;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2d2d2d;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.success {
+            background-color: rgba(34, 197, 94, 0.15);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .alert.error {
+            background-color: rgba(220, 38, 38, 0.15);
+            border: 1px solid #dc2626;
+            color: #ef4444;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #dc2626;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="user-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <h1>Đăng Ký</h1>
+            <p>Tạo tài khoản Quản lý Khách hàng</p>
+        </div>
+
+        <!-- Alert messages -->
+        <div id="alert" class="alert"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="fullName">Họ và tên</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        placeholder="Nguyễn Văn A"
+                        required
+                    >
+                </div>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">✉️</span>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="example@company.com"
+                        required
+                    >
+                </div>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📱</span>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            placeholder="0912345678"
+                            required
+                        >
+                    </div>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Công ty</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🏢</span>
+                        <input 
+                            type="text" 
+                            id="company" 
+                            name="company" 
+                            placeholder="ABC Corp"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="toggle-password" id="togglePassword">👁️</span>
+                    </div>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Xác nhận mật khẩu</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="toggle-password" id="toggleConfirmPassword">👁️</span>
+                    </div>
+                </div>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <!-- Checkbox đồng ý điều khoản -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="agreedToTerms" name="agreedToTerms" required>
+                <label for="agreedToTerms">
+                    Tôi đồng ý với 
+                    <a href="#" onclick="event.preventDefault()">Điều khoản dịch vụ</a> 
+                    và 
+                    <a href="#" onclick="event.preventDefault()">Chính sách bảo mật</a>
+                </label>
+            </div>
+            <div class="error-message" id="termsError" style="margin-top: -15px;"></div>
+
+            <button type="submit" class="btn" id="submitBtn">
+                Đăng ký
+            </button>
+        </form>
+
+        <div class="footer-links">
+            Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a>
+        </div>
+
+        <div class="footer-text">
+            © 2025 Customer Management System. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_URL = 'http://localhost:5000/api/auth';
+
+        // Form elements
+        const registerForm = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertBox = document.getElementById('alert');
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            if (confirmPasswordInput.type === 'password') {
+                confirmPasswordInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                confirmPasswordInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+
+        // Show alert message
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type} show`;
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Validate field
+        function validateField(field, errorElement, validator, errorMessage) {
+            const value = field.value.trim();
+            
+            if (!validator(value)) {
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('show');
+                return false;
+            } else {
+                errorElement.classList.remove('show');
+                return true;
+            }
+        }
+
+        // Validators
+        const validators = {
+            fullName: (value) => value.length >= 2,
+            email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            phone: (value) => /^0\d{9}$/.test(value),
+            password: (value) => value.length >= 6,
+            confirmPassword: (value) => {
+                const password = document.getElementById('password').value;
+                return value === password && value.length >= 6;
+            }
+        };
+
+        // Add real-time validation
+        document.getElementById('fullName').addEventListener('blur', function() {
+            validateField(
+                this,
+                document.getElementById('fullNameError'),
+                validators.fullName,
+                'Họ tên phải có ít nhất 2 ký tự'
+            );
+        });
+
+        document.getElementById('email').addEventListener('blur', function() {
+            validateField(
+                this,
+                document.getElementById('emailError'),
+                validators.email,
+                'Email không hợp lệ'
+            );
+        });
+
+        document.getElementById('phone').addEventListener('blur', function() {
+            validateField(
+                this,
+                document.getElementById('phoneError'),
+                validators.phone,
+                'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số'
+            );
+        });
+
+        document.getElementById('password').addEventListener('blur', function() {
+            validateField(
+                this,
+                document.getElementById('passwordError'),
+                validators.password,
+                'Mật khẩu phải có ít nhất 6 ký tự'
+            );
+        });
+
+        document.getElementById('confirmPassword').addEventListener('blur', function() {
+            validateField(
+                this,
+                document.getElementById('confirmPasswordError'),
+                validators.confirmPassword,
+                'Mật khẩu xác nhận không khớp'
+            );
+        });
+
+        // Form submission
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validate all fields
+            const fullNameValid = validateField(
+                document.getElementById('fullName'),
+                document.getElementById('fullNameError'),
+                validators.fullName,
+                'Họ tên phải có ít nhất 2 ký tự'
+            );
+
+            const emailValid = validateField(
+                document.getElementById('email'),
+                document.getElementById('emailError'),
+                validators.email,
+                'Email không hợp lệ'
+            );
+
+            const phoneValid = validateField(
+                document.getElementById('phone'),
+                document.getElementById('phoneError'),
+                validators.phone,
+                'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số'
+            );
+
+            const passwordValid = validateField(
+                document.getElementById('password'),
+                document.getElementById('passwordError'),
+                validators.password,
+                'Mật khẩu phải có ít nhất 6 ký tự'
+            );
+
+            const confirmPasswordValid = validateField(
+                document.getElementById('confirmPassword'),
+                document.getElementById('confirmPasswordError'),
+                validators.confirmPassword,
+                'Mật khẩu xác nhận không khớp'
+            );
+
+            // Check terms agreement
+            const agreedToTerms = document.getElementById('agreedToTerms');
+            const termsError = document.getElementById('termsError');
+            
+            if (!agreedToTerms.checked) {
+                termsError.textContent = 'Vui lòng đồng ý với điều khoản dịch vụ';
+                termsError.classList.add('show');
+                return;
+            } else {
+                termsError.classList.remove('show');
+            }
+
+            // If all validations pass
+            if (fullNameValid && emailValid && phoneValid && passwordValid && confirmPasswordValid) {
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Đang xử lý...';
+
+                try {
+                    // Prepare data
+                    const formData = {
+                        fullName: document.getElementById('fullName').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        phone: document.getElementById('phone').value.trim(),
+                        company: document.getElementById('company').value.trim(),
+                        password: document.getElementById('password').value,
+                        agreedToTerms: true
+                    };
+
+                    // Send to API
+                    const response = await fetch(`${API_URL}/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
+                        
+                        // Store token
+                        if (result.data && result.data.token) {
+                            localStorage.setItem('token', result.data.token);
+                            localStorage.setItem('user', JSON.stringify(result.data));
+                        }
+
+                        // Redirect to login or dashboard after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else {
+                        showAlert(result.message || 'Đăng ký thất bại. Vui lòng thử lại.', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Đăng ký';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('Có lỗi xảy ra. Vui lòng kiểm tra kết nối và thử lại.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Đăng ký';
+                }
+            }
+        });
+
+        // Clear error on input
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorId = this.id + 'Error';
+                const errorElement = document.getElementById(errorId);
+                if (errorElement && errorElement.classList.contains('show')) {
+                    errorElement.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
